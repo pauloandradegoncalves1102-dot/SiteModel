@@ -1,0 +1,1659 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harmonia | Serviços Musicais Premium</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #c9a84c;
+            --primary-light: #e8d5a3;
+            --primary-dark: #9a7b2d;
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-card-hover: #1a1a28;
+            --text: #f0f0f5;
+            --text-muted: #8888a0;
+            --gradient: linear-gradient(135deg, #c9a84c, #f0d78c, #c9a84c);
+            --shadow: 0 20px 60px rgba(201, 168, 76, 0.15);
+            --radius: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* ===== PRELOADER ===== */
+        .preloader {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            transition: opacity 0.6s, visibility 0.6s;
+        }
+
+        .preloader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .preloader-note {
+            font-size: 3rem;
+            color: var(--primary);
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 20px 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.4s;
+        }
+
+        .navbar.scrolled {
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 14px 60px;
+            border-bottom: 1px solid rgba(201, 168, 76, 0.1);
+        }
+
+        .nav-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            background: var(--gradient);
+            color: var(--bg-dark) !important;
+            padding: 10px 28px;
+            border-radius: 50px;
+            font-weight: 600 !important;
+            -webkit-text-fill-color: var(--bg-dark);
+        }
+
+        .nav-cta::after {
+            display: none !important;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .hamburger span {
+            width: 28px;
+            height: 2px;
+            background: var(--primary);
+            transition: all 0.3s;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 120px 60px 80px;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 30% 50%, rgba(201, 168, 76, 0.08) 0%, transparent 60%),
+                        radial-gradient(ellipse at 70% 30%, rgba(100, 80, 200, 0.05) 0%, transparent 50%);
+        }
+
+        .hero-particles {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0;
+            animation: float-particle 8s infinite;
+        }
+
+        @keyframes float-particle {
+            0% { opacity: 0; transform: translateY(100vh) scale(0); }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { opacity: 0; transform: translateY(-100px) scale(1); }
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 900px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(201, 168, 76, 0.1);
+            border: 1px solid rgba(201, 168, 76, 0.3);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            color: var(--primary);
+            margin-bottom: 30px;
+            animation: fadeInDown 1s 0.3s both;
+        }
+
+        .hero-badge i {
+            font-size: 0.7rem;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.8rem, 6vw, 5rem);
+            font-weight: 700;
+            line-height: 1.15;
+            margin-bottom: 24px;
+            animation: fadeInUp 1s 0.5s both;
+        }
+
+        .hero h1 .highlight {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 40px;
+            line-height: 1.8;
+            animation: fadeInUp 1s 0.7s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s 0.9s both;
+        }
+
+        .btn {
+            padding: 16px 40px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: var(--bg-dark);
+            box-shadow: 0 10px 40px rgba(201, 168, 76, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 50px rgba(201, 168, 76, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin-top: 60px;
+            animation: fadeInUp 1s 1.1s both;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* ===== SECTIONS ===== */
+        .section {
+            padding: 120px 60px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 70px;
+        }
+
+        .section-tag {
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--primary);
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .section-subtitle {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            max-width: 550px;
+            margin: 0 auto;
+        }
+
+        /* ===== SERVICES ===== */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius);
+            padding: 40px;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient);
+            transform: scaleX(0);
+            transition: transform 0.4s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            background: var(--bg-card-hover);
+            border-color: rgba(201, 168, 76, 0.2);
+            box-shadow: var(--shadow);
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .service-icon {
+            width: 64px;
+            height: 64px;
+            background: rgba(201, 168, 76, 0.1);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 24px;
+        }
+
+        .service-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+        }
+
+        .service-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .service-features {
+            list-style: none;
+            margin-bottom: 24px;
+        }
+
+        .service-features li {
+            padding: 8px 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .service-features li i {
+            color: var(--primary);
+            font-size: 0.75rem;
+        }
+
+        .service-price {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .service-price span {
+            font-size: 0.9rem;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        /* ===== LESSONS ===== */
+        .lessons-section {
+            background: linear-gradient(180deg, transparent, rgba(201, 168, 76, 0.03), transparent);
+        }
+
+        .instruments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .instrument-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .instrument-card:hover {
+            border-color: rgba(201, 168, 76, 0.3);
+            transform: scale(1.03);
+            background: var(--bg-card-hover);
+        }
+
+        .instrument-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+            color: var(--primary);
+        }
+
+        .instrument-card h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .instrument-card p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* ===== EVENTS ===== */
+        .events-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .event-card {
+            position: relative;
+            border-radius: var(--radius);
+            overflow: hidden;
+            height: 400px;
+            cursor: pointer;
+        }
+
+        .event-card-bg {
+            position: absolute;
+            inset: 0;
+            transition: transform 0.6s;
+        }
+
+        .event-card:hover .event-card-bg {
+            transform: scale(1.1);
+        }
+
+        .event-card:nth-child(1) .event-card-bg {
+            background: linear-gradient(135deg, #1a0a2e, #2d1b4e);
+        }
+
+        .event-card:nth-child(2) .event-card-bg {
+            background: linear-gradient(135deg, #0a1a2e, #1b2d4e);
+        }
+
+        .event-card:nth-child(3) .event-card-bg {
+            background: linear-gradient(135deg, #2e0a1a, #4e1b2d);
+        }
+
+        .event-card-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 30px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.9));
+            z-index: 2;
+        }
+
+        .event-card-content h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .event-card-content p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .event-card-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 4rem;
+            color: rgba(201, 168, 76, 0.2);
+            z-index: 1;
+        }
+
+        /* ===== PRICING ===== */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            align-items: start;
+        }
+
+        .pricing-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius);
+            padding: 40px;
+            text-align: center;
+            transition: all 0.4s;
+            position: relative;
+        }
+
+        .pricing-card.featured {
+            border-color: var(--primary);
+            background: linear-gradient(180deg, rgba(201, 168, 76, 0.05), var(--bg-card));
+            transform: scale(1.05);
+        }
+
+        .pricing-card.featured::before {
+            content: 'Mais Popular';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gradient);
+            color: var(--bg-dark);
+            padding: 4px 20px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .pricing-card.featured:hover {
+            transform: scale(1.05) translateY(-5px);
+        }
+
+        .pricing-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+        }
+
+        .pricing-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 24px;
+        }
+
+        .pricing-amount {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 30px;
+        }
+
+        .pricing-amount small {
+            font-size: 1rem;
+            color: var(--text-muted);
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+        }
+
+        .pricing-features {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 30px;
+        }
+
+        .pricing-features li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .pricing-features li i {
+            color: var(--primary);
+            font-size: 0.8rem;
+        }
+
+        .pricing-features li.disabled {
+            opacity: 0.4;
+        }
+
+        .pricing-features li.disabled i {
+            color: var(--text-muted);
+        }
+
+        /* ===== TESTIMONIALS ===== */
+        .testimonials-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .testimonials-track {
+            display: flex;
+            gap: 30px;
+            transition: transform 0.5s ease;
+        }
+
+        .testimonial-card {
+            min-width: calc(33.333% - 20px);
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius);
+            padding: 36px;
+            flex-shrink: 0;
+        }
+
+        .testimonial-stars {
+            color: var(--primary);
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+        }
+
+        .testimonial-text {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.8;
+            margin-bottom: 24px;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .testimonial-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--bg-dark);
+            font-size: 0.9rem;
+        }
+
+        .testimonial-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .testimonial-role {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .testimonial-nav {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 40px;
+        }
+
+        .testimonial-nav button {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: transparent;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .testimonial-nav button:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* ===== CTA BANNER ===== */
+        .cta-banner {
+            background: linear-gradient(135deg, rgba(201, 168, 76, 0.1), rgba(100, 80, 200, 0.05));
+            border: 1px solid rgba(201, 168, 76, 0.2);
+            border-radius: 24px;
+            padding: 80px 60px;
+            text-align: center;
+            margin: 0 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(201, 168, 76, 0.05) 0%, transparent 50%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .cta-banner h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .cta-banner p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            margin-bottom: 32px;
+            position: relative;
+        }
+
+        .cta-banner .btn {
+            position: relative;
+        }
+
+        /* ===== CONTACT ===== */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .contact-info h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+
+        .contact-info p {
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+
+        .contact-details {
+            list-style: none;
+        }
+
+        .contact-details li {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .contact-details li .icon {
+            width: 44px;
+            height: 44px;
+            background: rgba(201, 168, 76, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+        }
+
+        .contact-details li span {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .contact-form {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius);
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 16px;
+            background: var(--gradient);
+            color: var(--bg-dark);
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .form-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(201, 168, 76, 0.3);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 60px;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+        }
+
+        .footer-socials {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .footer-socials a {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            transition: all 0.3s;
+        }
+
+        .footer-socials a:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .footer-copy {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .testimonial-card {
+                min-width: calc(50% - 15px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 16px 24px;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 280px;
+                height: 100vh;
+                background: var(--bg-card);
+                flex-direction: column;
+                padding: 80px 40px;
+                transition: right 0.4s;
+                gap: 24px;
+            }
+
+            .nav-links.open {
+                right: 0;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hero {
+                padding: 120px 24px 60px;
+            }
+
+            .hero-stats {
+                gap: 30px;
+            }
+
+            .section {
+                padding: 80px 24px;
+            }
+
+            .services-grid,
+            .events-showcase,
+            .pricing-grid,
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .testimonial-card {
+                min-width: 100%;
+            }
+
+            .cta-banner {
+                margin: 0 24px;
+                padding: 50px 30px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-card.featured {
+                transform: scale(1);
+            }
+
+            .pricing-card.featured:hover {
+                transform: translateY(-5px);
+            }
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(201, 168, 76, 0.3);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(201, 168, 76, 0.5);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-note">
+            <i class="fas fa-music"></i>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-logo">HARMONIA</div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#servicos">Serviços</a></li>
+            <li><a href="#aulas">Aulas</a></li>
+            <li><a href="#eventos">Eventos</a></li>
+            <li><a href="#planos">Planos</a></li>
+            <li><a href="#depoimentos">Depoimentos</a></li>
+            <li><a href="#contato" class="nav-cta">Orçamento</a></li>
+        </ul>
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" id="inicio">
+        <div class="hero-bg"></div>
+        <div class="hero-particles" id="particles"></div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <i class="fas fa-star"></i>
+                Referência em serviços musicais
+            </div>
+            <h1>A música que dá <span class="highlight">vida</span> aos seus momentos</h1>
+            <p>Do primeiro acorde à última nota. Aulas personalizadas com professores premiados e músicos profissionais para casamentos, festas e eventos corporativos.</p>
+            <div class="hero-buttons">
+                <a href="#contato" class="btn btn-primary">
+                    <i class="fas fa-calendar-check"></i>
+                    Solicitar Orçamento
+                </a>
+                <a href="#servicos" class="btn btn-outline">
+                    <i class="fas fa-play"></i>
+                    Conheça Nossos Serviços
+                </a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <div class="stat-number" data-count="15">0</div>
+                    <div class="stat-label">Anos de experiência</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number" data-count="500">0</div>
+                    <div class="stat-label">Eventos realizados</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number" data-count="800">0</div>
+                    <div class="stat-label">Alunos formados</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number" data-count="98">0</div>
+                    <div class="stat-label">% Satisfação</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section class="section" id="servicos">
+        <div class="section-header reveal">
+            <span class="section-tag">O que oferecemos</span>
+            <h2 class="section-title">Serviços Musicais Premium</h2>
+            <p class="section-subtitle">Soluções completas para quem quer aprender música ou contratar profissionais para eventos</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card reveal">
+                <div class="service-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h3>Aulas Particulares</h3>
+                <p>Aprendizado individualizado com professores especializados em cada instrumento e estilo musical.</p>
+                <ul class="service-features">
+                    <li><i class="fas fa-check-circle"></i> Professor dedicado</li>
+                    <li><i class="fas fa-check-circle"></i> Flexibilidade de horários</li>
+                    <li><i class="fas fa-check-circle"></i> Presencial ou online</li>
+                    <li><i class="fas fa-check-circle"></i> Material didático incluso</li>
+                </ul>
+                <div class="service-price">R$ 120 <span>/ aula (60min)</span></div>
+            </div>
+            <div class="service-card reveal">
+                <div class="service-icon">
+                    <i class="fas fa-ring"></i>
+                </div>
+                <h3>Músicos para Casamentos</h3>
+                <p>Trilhas ao vivo que transformam sua cerimônia em um momento inesquecível, do "sim" à festa.</p>
+                <ul class="service-features">
+                    <li><i class="fas fa-check-circle"></i> Trio a orquestra completa</li>
+                    <li><i class="fas fa-check-circle"></i> Repertório personalizado</li>
+                    <li><i class="fas fa-check-circle"></i> Som e iluminação inclusos</li>
+                    <li><i class="fas fa-check-circle"></i> Ensaio pré-evento</li>
+                </ul>
+                <div class="service-price">R$ 2.500 <span>/ evento</span></div>
+            </div>
+            <div class="service-card reveal">
+                <div class="service-icon">
+                    <i class="fas fa-building"></i>
+                </div>
+                <h3>Eventos Corporativos</h3>
+                <p>Atuação profissional para lançamentos, confraternizações, aniversários de empresa e recepções.</p>
+                <ul class="service-features">
+                    <li><i class="fas fa-check-circle"></i> Bandas de 2 a 8 músicos</li>
+                    <li><i class="fas fa-check-circle"></i> DJ + ao vivo combinado</li>
+                    <li><i class="fas fa-check-circle"></i> Estrutura técnica completa</li>
+                    <li><i class="fas fa-check-circle"></i> Coordenação musical</li>
+                </ul>
+                <div class="service-price">R$ 3.800 <span>/ evento</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lessons / Instruments -->
+    <section class="section lessons-section" id="aulas">
+        <div class="section-header reveal">
+            <span class="section-tag">Escola de Música</span>
+            <h2 class="section-title">Escolha seu Instrumento</h2>
+            <p class="section-subtitle">Professores com formação em conservatórios e experiência internacional</p>
+        </div>
+        <div class="instruments-grid reveal">
+            <div class="instrument-card">
+                <div class="icon"><i class="fas fa-guitar"></i></div>
+                <h4>Guitarra</h4>
+                <p>Elétrica, acústica e 7 cordas</p>
+            </div>
+            <div class="instrument-card">
+                <div class="icon"><i class="fas fa-piano"></i></div>
+                <h4>Piano</h4>
+                <p>Clássico e popular</p>
+            </div>
+            <div class="instrument-card">
+                <div class="icon"><i class="fas fa-microphone"></i></div>
+                <h4>Voz</h4>
+                <p>Técnica vocal e interpretação</p>
+            </div>
+            <div class="instrument-card">
+                <div class="icon"><i class="fas fa-drum"></i></div>
+                <h4>Bateria</h4>
+                <p>Rock, jazz e percussão</p>
+            </div>
+            <div class="instrument-card">
+                <div class="icon"><i class="fas fa-violin"></i></div>
+                <h4>Violino</h4>
+                <p>Clássico e erudito</p>
+            </div>
+            <div class="instrument-card">
+                <div class="icon"><i class="fas fa-guitar"></i></div>
+                <h4>Baixo</h4>
+                <p>Elétrico e acústico</p>
+            </div>
+            <div class="instrument-card">
+                <div class="icon"><i class="fas fa-music"></i></div>
+                <h4>Teclado</h4>
+                <p>MPB, pop e erudito</p>
+            </div>
+            <div class="instrument-card">
+                <div class="icon"><i class="fas fa-saxophone"></i></div>
+                <h4>Saxofone</h4>
+                <p>Jazz e pop</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events Showcase -->
+    <section class="section" id="eventos">
+        <div class="section-header reveal">
+            <span class="section-tag">Nossas atuações</span>
+            <h2 class="section-title">Eventos que Tocam Corações</h2>
+            <p class="section-subtitle">Cada evento é único, e a música deve ser também</p>
+        </div>
+        <div class="events-showcase reveal">
+            <div class="event-card">
+                <div class="event-card-bg"></div>
+                <div class="event-card-icon"><i class="fas fa-ring"></i></div>
+                <div class="event-card-content">
+                    <h3>Casamentos</h3>
+                    <p>Cerimônia religiosa, civil ou ao ar livre. Do primeiro olhar à última dança.</p>
+                </div>
+            </div>
+            <div class="event-card">
+                <div class="event-card-bg"></div>
+                <div class="event-card-icon"><i class="fas fa-briefcase"></i></div>
+                <div class="event-card-content">
+                    <h3>Eventos Corporativos</h3>
+                    <p>Lançamentos, aniversários de empresa, confraternizações e recepções VIP.</p>
+                </div>
+            </div>
+            <div class="event-card">
+                <div class="event-card-bg"></div>
+                <div class="event-card-icon"><i class="fas fa-glass-cheers"></i></div>
+                <div class="event-card-content">
+                    <h3>Festas & Aniversários</h3>
+                    <p>Do brunch intimista à festa de 500 convidados. A trilha sonora perfeita.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section class="section" id="planos">
+        <div class="section-header reveal">
+            <span class="section-tag">Investimento</span>
+            <h2 class="section-title">Planos de Aulas</h2>
+            <p class="section-subtitle">Escolha o plano ideal para o seu ritmo de aprendizado</p>
+        </div>
+        <div class="pricing-grid reveal">
+            <div class="pricing-card">
+                <h3 class="pricing-name">Básico</h3>
+                <p class="pricing-desc">Para quem está começando</p>
+                <div class="pricing-amount">R$ 390<small>/mês</small></div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check-circle"></i> 4 aulas mensais (60min)</li>
+                    <li><i class="fas fa-check-circle"></i> 1 instrumento</li>
+                    <li><i class="fas fa-check-circle"></i> Material didático digital</li>
+                    <li><i class="fas fa-check-circle"></i> Suporte por WhatsApp</li>
+                    <li class="disabled"><i class="fas fa-times-circle"></i> Showcase trimestral</li>
+                    <li class="disabled"><i class="fas fa-times-circle"></i> Aulas em grupo</li>
+                </ul>
+                <a href="#contato" class="btn btn-outline" style="width:100%; justify-content:center;">Começar Agora</a>
+            </div>
+            <div class="pricing-card featured">
+                <h3 class="pricing-name">Profissional</h3>
+                <p class="pricing-desc">O equilíbrio perfeito</p>
+                <div class="pricing-amount">R$ 690<small>/mês</small></div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check-circle"></i> 8 aulas mensais (60min)</li>
+                    <li><i class="fas fa-check-circle"></i> 2 instrumentos</li>
+                    <li><i class="fas fa-check-circle"></i> Material didático completo</li>
+                    <li><i class="fas fa-check-circle"></i> Suporte prioritário</li>
+                    <li><i class="fas fa-check-circle"></i> Showcase trimestral</li>
+                    <li class="disabled"><i class="fas fa-times-circle"></i> Aulas em grupo</li>
+                </ul>
+                <a href="#contato" class="btn btn-primary" style="width:100%; justify-content:center;">Começar Agora</a>
+            </div>
+            <div class="pricing-card">
+                <h3 class="pricing-name">Elite</h3>
+                <p class="pricing-desc">Experiência completa</p>
+                <div class="pricing-amount">R$ 1.190<small>/mês</small></div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check-circle"></i> 12 aulas mensais (90min)</li>
+                    <li><i class="fas fa-check-circle"></i> Instrumentos ilimitados</li>
+                    <li><i class="fas fa-check-circle"></i> Material + gravações</li>
+                    <li><i class="fas fa-check-circle"></i> Mentor dedicado</li>
+                    <li><i class="fas fa-check-circle"></i> Showcases ilimitados</li>
+                    <li><i class="fas fa-check-circle"></i> Aulas em grupo</li>
+                </ul>
+                <a href="#contato" class="btn btn-outline" style="width:100%; justify-content:center;">Começar Agora</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="section" id="depoimentos">
+        <div class="section-header reveal">
+            <span class="section-tag">Depoimentos</span>
+            <h2 class="section-title">O que dizem nossos clientes</h2>
+        </div>
+        <div class="testimonials-wrapper reveal">
+            <div class="testimonials-track" id="testimonialTrack">
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"Contratamos o trio para o nosso casamento e foi simplesmente mágico. Os convidados até hoje falam da música ao vivo. Superou todas as expectativas."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">MC</div>
+                        <div>
+                            <div class="testimonial-name">Mariana Costa</div>
+                            <div class="testimonial-role">Casamento em São Paulo</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"Em 6 meses de aulas de guitarra já estou tocando minhas músicas favoritas. A metodologia do professor é incrível e o acompanhamento é constante."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">RA</div>
+                        <div>
+                            <div class="testimonial-name">Rafael Almeida</div>
+                            <div class="testimonial-role">Aluno de Guitarra</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"A banda tocou no lançamento do nosso produto e a energia foi contagiante. Profissionalismo impecável do início ao fim. Já estamos fechando o próximo."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">FS</div>
+                        <div>
+                            <div class="testimonial-name">Fernanda Santos</div>
+                            <div class="testimonial-role">Gerente de Marketing, TechCorp</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"Minha filha de 8 anos ama as aulas de piano. A professora tem uma paciência e didática que fazem toda a diferença. Recomendo de olhos fechados."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">PL</div>
+                        <div>
+                            <div class="testimonial-name">Paulo Lima</div>
+                            <div class="testimonial-role">Pai de aluna</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"O quarteto de cordas tocou na recepção do nosso evento corporativo. Elegância e profissionalismo que elevaram o patamar da nossa marca."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">CT</div>
+                        <div>
+                            <div class="testimonial-name">Carla Torres</div>
+                            <div class="testimonial-role">Diretora de Eventos, Grupo Vetta</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-nav">
+                <button id="prevTestimonial"><i class="fas fa-arrow-left"></i></button>
+                <button id="nextTestimonial"><i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Banner -->
+    <div class="cta-banner reveal">
+        <h2>Pronto para fazer a música acontecer?</h2>
+        <p>Entre em contato e receba um orçamento personalizado em até 24 horas.</p>
+        <a href="#contato" class="btn btn-primary">
+            <i class="fas fa-paper-plane"></i>
+            Solicitar Orçamento Gratuito
+        </a>
+    </div>
+
+    <!-- Contact -->
+    <section class="section" id="contato">
+        <div class="contact-grid">
+            <div class="contact-info reveal">
+                <h3>Fale Conosco</h3>
+                <p>Conte-nos sobre o seu evento ou objetivo musical. Nossa equipe retornará em até 24h com uma proposta personalizada.</p>
+                <ul class="contact-details">
+                    <li>
+                        <div class="icon"><i class="fas fa-phone"></i></div>
+                        <span>(11) 99999-8888</span>
+                    </li>
+                    <li>
+                        <div class="icon"><i class="fas fa-envelope"></i></div>
+                        <span>contato@harmonia.com.br</span>
+                    </li>
+                    <li>
+                        <div class="icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <span>São Paulo, SP – Atuação em todo o Brasil</span>
+                    </li>
+                    <li>
+                        <div class="icon"><i class="fas fa-clock"></i></div>
+                        <span>Seg a Sáb, 9h às 20h</span>
+                    </li>
+                </ul>
+            </div>
+            <form class="contact-form reveal" id="contactForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nome completo</label>
+                        <input type="text" placeholder="Seu nome" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Telefone / WhatsApp</label>
+                        <input type="tel" placeholder="(11) 99999-9999" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>E-mail</label>
+                    <input type="email" placeholder="seu@email.com" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Tipo de serviço</label>
+                        <select required>
+                            <option value="">Selecione...</option>
+                            <option>Aulas particulares</option>
+                            <option>Músicos para casamento</option>
+                            <option>Evento corporativo</option>
+                            <option>Festa / Aniversário</option>
+                            <option>Outro</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Data prevista</label>
+                        <input type="date" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Conte-nos mais detalhes</label>
+                    <textarea placeholder="Descreva o evento, número de convidados, estilo musical preferido, etc."></textarea>
+                </div>
+                <button type="submit" class="form-submit">
+                    <i class="fas fa-paper-plane"></i> Enviar Mensagem
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-logo">HARMONIA</div>
+        <div class="footer-socials">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+            <a href="#"><i class="fab fa-spotify"></i></a>
+            <a href="#"><i class="fab fa-whatsapp"></i></a>
+            <a href="#"><i class="fab fa-facebook"></i></a>
+        </div>
+        <p class="footer-copy">© 2026 Harmonia Serviços Musicais. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        // Preloader
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('preloader').classList.add('hidden');
+            }, 800);
+        });
+
+        // Navbar scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // Hamburger
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+        });
+
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => navLinks.classList.remove('open'));
+        });
+
+        // Particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.animationDelay = Math.random() * 8 + 's';
+            p.style.animationDuration = (6 + Math.random() * 6) + 's';
+            p.style.width = p.style.height = (2 + Math.random() * 4) + 'px';
+            particlesContainer.appendChild(p);
+        }
+
+        // Counter animation
+        const counters = document.querySelectorAll('.stat-number');
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const el = entry.target;
+                    const target = +el.dataset.count;
+                    let current = 0;
+                    const step = target / 60;
+                    const timer = setInterval(() => {
+                        current += step;
+                        if (current >= target) {
+                            el.textContent = target + '+';
+                            clearInterval(timer);
+                        } else {
+                            el.textContent = Math.floor(current);
+                        }
+                    }, 30);
+                    counterObserver.unobserve(el);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        counters.forEach(c => counterObserver.observe(c));
+
+        // Reveal on scroll
+        const reveals = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        reveals.forEach(r => revealObserver.observe(r));
+
+        // Testimonials carousel
+        const track = document.getElementById('testimonialTrack');
+        let currentSlide = 0;
+
+        function getSlideWidth() {
+            const card = track.querySelector('.testimonial-card');
+            return card.offsetWidth + 30;
+        }
+
+        function getMaxSlide() {
+            const totalCards = track.children.length;
+            const visibleCards = window.innerWidth < 768 ? 1 : window.innerWidth < 1024 ? 2 : 3;
+            return totalCards - visibleCards;
+        }
+
+        document.getElementById('nextTestimonial').addEventListener('click', () => {
+            currentSlide = Math.min(currentSlide + 1, getMaxSlide());
+            track.style.transform = `translateX(-${currentSlide * getSlideWidth()}px)`;
+        });
+
+        document.getElementById('prevTestimonial').addEventListener('click', () => {
+            currentSlide = Math.max(currentSlide - 1, 0);
+            track.style.transform = `translateX(-${currentSlide * getSlideWidth()}px)`;
+        });
+
+        // Auto-slide
+        setInterval(() => {
+            if (currentSlide >= getMaxSlide()) currentSlide = 0;
+            else currentSlide++;
+            track.style.transform = `translateX(-${currentSlide * getSlideWidth()}px)`;
+        }, 5000);
+
+        // Form
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('.form-submit');
+            btn.innerHTML = '<i class="fas fa-check"></i> Mensagem Enviada!';
+            btn.style.background = '#2ecc71';
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar Mensagem';
+                btn.style.background = '';
+                e.target.reset();
+            }, 3000);
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>   
